@@ -31,24 +31,24 @@ db.userSchema = mongoose.Schema({
   password: String
 });
 
-db.urlSchema.pre('init', function(next, linkInfo){
+db.urlSchema.pre('save', function(next){
   var shasum = crypto.createHash('sha1');
-  shasum.update(linkInfo.url);
-  linkInfo.code = shasum.digest('hex').slice(0, 5);
-  linkInfo.visits = 0;
+  shasum.update(this.url);
+  this.code = shasum.digest('hex').slice(0, 5);
+  this.visits = 0;
   next();
 });
 
-db.userSchema.pre('init', function(next, userInfo){
+db.userSchema.pre('save', function(next){
   var cipher = Promise.promisify(bcrypt.hash);
-  return cipher(userInfo.password, null, null).bind(this)
+  return cipher(this.password, null, null).bind(this)
     .then(function(hash) {
-      userInfo.password = hash;
+      this.password = hash;
       next();
     });
 });
 
-db.userSchema.methods.comparePassword = function(attempedPassword, callback){
+db.userSchema.methods.comparePassword = function(attemptedPassword, callback){
     bcrypt.compare(attemptedPassword, this.password, function(err, isMatch) {
       callback(isMatch);
     });  
