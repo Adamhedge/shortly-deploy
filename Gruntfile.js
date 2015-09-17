@@ -9,12 +9,18 @@ module.exports = function(grunt) {
         // sourceMapName: 'public/dist/shortymcshortly.js.map',
         // sourceMapStyle: 'link'
       },
-      dist: {
-        src: [
-          'public/client/*.js',
-          'public/lib/*.js'
-        ],
+      client: {
+        src: 'public/client/*.js',
         dest: 'public/dist/shortymcshortly.js'
+      },
+      dependencies: {
+        src: [
+          'public/lib/jquery.js',
+          'public/lib/underscore.js',
+          'public/lib/backbone.js',
+          'public/lib/handlebars.js'
+        ],
+        dest: 'public/dist/dependencies.js'
       }
     },
 
@@ -39,11 +45,17 @@ module.exports = function(grunt) {
         // sourceMapIncludeSources: true,
         // sourceMapIn: 'public/dist/shortymcshortly.js.map'
       },
-      dist: {
-        src: '<%= concat.dist.dest %>',
+      client: {
+        src: '<%= concat.client.dest %>',
         //.tmp is a best practice for intermediary files/garbage.
         dest: 'public/dist/shortymcshortly.min.js'
-      }
+      },
+      dependencies: {
+        src: '<%= concat.dependencies.dest %>',
+        //.tmp is a best practice for intermediary files/garbage.
+        dest: 'public/dist/dependencies.min.js'
+      },
+      
     },
 
     jshint: {
