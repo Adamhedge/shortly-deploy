@@ -3,6 +3,19 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      options: {
+        separator: ';'
+        // sourceMap: true,
+        // sourceMapName: 'public/dist/shortymcshortly.js.map',
+        // sourceMapStyle: 'link'
+      },
+      dist: {
+        src: [
+          'public/client/*.js',
+          'public/lib/*.js'
+        ],
+        dest: 'public/dist/shortymcshortly.js'
+      }
     },
 
     mochaTest: {
@@ -21,17 +34,34 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      options: {
+        // sourceMap: true,
+        // sourceMapIncludeSources: true,
+        // sourceMapIn: 'public/dist/shortymcshortly.js.map'
+      },
+      dist: {
+        src: '<%= concat.dist.dest %>',
+        //.tmp is a best practice for intermediary files/garbage.
+        dest: 'public/dist/shortymcshortly.min.js'
+      }
     },
 
     jshint: {
       files: [
         // Add filespec list here
+        '*.js',
+        'app/*.js',
+        'app/**/*.js',
+        'lib/*.js',
+        'public/*.js',
+        'public/**/*.js'
       ],
       options: {
         force: 'true',
         jshintrc: '.jshintrc',
         ignores: [
           'public/lib/**/*.js',
+          // 'test/*.js'
           'public/dist/**/*.js'
         ]
       }
@@ -39,6 +69,12 @@ module.exports = function(grunt) {
 
     cssmin: {
         // Add filespec list here
+      target: {
+        files: [{
+          src: 'public/style.css',
+          dest: 'public/dist/style.min.css'
+        }]
+      }
     },
 
     watch: {
@@ -91,10 +127,14 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
+    'jshint',
     'mochaTest'
   ]);
 
   grunt.registerTask('build', [
+    'cssmin',
+    'concat',
+    'uglify'
   ]);
 
   grunt.registerTask('upload', function(n) {
@@ -107,6 +147,14 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
       // add your production server task here
+  ]);
+
+  grunt.registerTask('default', [
+    'jshint',
+    'mochaTest',
+    'cssmin',
+    'concat',
+    'uglify'
   ]);
 
 
