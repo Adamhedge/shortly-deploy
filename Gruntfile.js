@@ -139,8 +139,7 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
-    'jshint',
-    'mochaTest'
+    'jshint'
   ]);
 
   grunt.registerTask('build', [
@@ -163,7 +162,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', [
     'jshint',
-    'mochaTest',
     'cssmin',
     'concat',
     'uglify'
