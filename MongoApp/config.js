@@ -5,7 +5,8 @@ var Promise = require('bluebird');
 
 //TODO: reroute mongoose to azure or localhost depending on...that thing.
 //CHECK: do we need to make the test DB and do we need to call it something not test?
-var mongooseHost = 'mongodb://localhost/test;'
+// var mongooseHost = 'mongodb://localhost/shortymcmongo';
+var mongooseHost = 'mongodb://shorts:mcgee@ds042888.mongolab.com:42888/shortymcmongo';
 mongoose.connect(mongooseHost);
 
 //Connection handling

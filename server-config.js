@@ -17,6 +17,8 @@ app.configure(function() {
   app.use(express.session());
 });
 
+console.log("appp.settings is: ", app.settings);
+
 app.get('/', util.checkUser, handler.renderIndex);
 app.get('/create', util.checkUser, handler.renderIndex);
 
